@@ -1,0 +1,253 @@
+
+  <div class="option-panel">
+    <span class="panel-btn">
+      <i class="fa ion-android-settings fa-spin"></i>
+    </span>
+    <div class="color-panel">
+      <h4>Text Color</h4>
+      <span class="color1" onclick="setActiveStyleSheet('color1'); return false;">
+        <i></i>
+      </span>
+      <span class="color2" onclick="setActiveStyleSheet('color2'); return false;">
+        <i></i>
+      </span>
+      <span class="color3" onclick="setActiveStyleSheet('color'); return false;">
+        <i></i>
+      </span>
+      <span class="color4" onclick="setActiveStyleSheet('color4'); return false;">
+        <i></i>
+      </span>
+      <span class="color5" onclick="setActiveStyleSheet('color5'); return false;">
+        <i></i>
+      </span>
+    </div>
+  </div>
+  <!-- Options Panel -->
+  <div class="pg-tp">
+    <i class="ion-cube"></i>
+    <div class="pr-tp-inr">
+      <h4>Gallery Style 2</h4>
+      <span>Some of extra awesome Gallery style.</span>
+    </div>
+  </div>
+  <!-- Page Top -->
+  <div class="panel-content">
+    <div class="widget pad50-65 mb150">
+      <div class="btns-wrp">
+        <div class="btns-list">
+          <%= link_to '<i class="fa fa-plus"></i> NEW</a>'.html_safe, "/create_board", method: :post, class: "brd-rd5 btn btn-outline-success new" %>
+          <div class="filebox"> 
+          <form id="test" method="post" action="/home/create_upload" enctype="multipart/form-data">
+            <label for="upload_img" class="brd-rd5 btn btn-outline-success">
+              <i class="fa fa-upload"></i> UPLOAD</label><input type="file" name="board[image_path]" id="upload_img">
+          </form>
+          </div>
+      <div class="fltrs text-center">
+        <ul class="fltrs-lst" data-option-key="filter">
+          <li>
+            <a class="selected" href="#" title="" data-option-value="*">All</a>
+          </li>
+          <li>
+            <a href="#" title="" data-option-value=".edit11">수정 중</a>
+          </li>
+          <li>
+            <a href="#" title="" data-option-value=".finish">완성</a>
+          </li>
+          <li>
+            <a href="#" title="" data-option-value=".first1">초안</a>
+          </li>
+        </ul>
+        
+        <div class="gallery-wrp">
+          <div class="row mrg10 add-box">
+            <% @boards.reverse.each do |board| %>
+              <div class="col-md-4 col-sm-6 col-lg-4 flt-itm <%= board.state %>">
+                <% if board.state == "first1" %>
+                <div class="gallery-box border border-light" id="<%= board.id %>">
+                <% elsif board.state == "edit11" %>
+                <div class="gallery-box border border-warning" style="border: 3px solid;" id="<%= board.id %>">
+                <% else %>
+                <div class="gallery-box border border-primary" id="<%= board.id %>">
+                <% end %>
+                  <div class="wdgt-opt">
+                            <span class="wdgt-opt-btn">
+                                <i class="ion-android-more-vertical"></i>
+                            </span>
+                            <div class="wdgt-opt-lst brd-rd5">
+                                <%=link_to "Delete", destroy_path(board.id), data: { confirm: "Are you sure?" }, method: "delete", class: "delt-wdgt"%>
+                                <a class="convert-state" href="#" title="">Convert</a>
+                                <a class="refrsh-wdgt" href="#" title="">Download</a>
+                            </div>
+                        </div>
+                        <div class="wdgt-ldr">
+                            <div class="ball-scale-multiple">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                  </div>
+                  <% if board.image_path.to_s().include?("jpg") || board.image_path.to_s().include?("png") %>
+                  <img src="<%=board.image_path.thumb.url %>" alt="">
+                  <% else %>
+                  <img src="<%= asset_path 'resource/default.png' %>" alt=""/>
+                  <% end %>
+                  <div class="gallery-info">
+                    <span class="concept-<%=board.id%> text-white"><%= board.concept %></span>
+                    <button type="submit" data-id="<%=board.id %>" class="edit-concept" style="background-color:transparent;">
+                    <i class="fa fa-pencil" style="color:white"></i></button><br/>
+                    <span class="cate">
+                      <a href="#" title="">first11</a>,
+                      <a href="#" title="">tb</a>,
+                      <a href="#" title="">Nature</a>
+                    </span>
+                    <span class="lightbox">
+                      <a href="images/resource/gallery2-2.jpg" title="">
+                        <i class="fa fa-search"></i>
+                      </a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Panel Content -->
+  
+  
+<% content_for 'javascript_content' do %>
+<%= javascript_include_tag params[:controller] %>
+
+<style>
+.border {
+  border: 3px solid #dee2e6 !important;
+}
+.border-primary {
+  border-color: #007bff !important;
+}
+
+.border-warning {
+  border-color: #ffc107 !important;
+}
+
+.border-light {
+  border-color: #f8f9fa !important;
+}
+
+/*.filebox label { */
+/*  display: inline-block; */
+/*  padding: .5em .75em; */
+/*  color: #999; */
+/*  font-size: inherit; */
+/*  line-height: normal; */
+/*  vertical-align: middle; */
+/*  background-color: #fdfdfd; */
+/*  cursor: pointer; */
+/*  border: 1px */
+/*  solid #ebebeb; */
+/*  border-bottom-color: #e2e2e2; */
+/*  border-radius: .25em; } */
+
+.filebox input[type="file"] {/* 파일 필드 숨기기  */
+  position: absolute; 
+  width: 1px; 
+  height: 1px; 
+  padding: 0; 
+  margin: -1px; 
+  overflow: hidden; 
+  clip:rect(0,0,0,0); 
+  border: 0; }
+
+</style>
+<% end %>
+
+<script>
+$(document).on('ready',function(){
+  $(document).on('click','.convert-state', function(){
+    var box = $(this).parent().parent().parent().parent();
+    var state_info = $(this).parent().parent().parent();
+    var current_id = parseInt(state_info.attr('id'));
+    
+    if(box.hasClass('first1')){
+      state_info.removeClass('border border-light').addClass('border border-warning');
+      box.removeClass('first1').addClass('edit11');
+      var state = "edit11";
+      $.ajax({  
+        url: '/home/state', 
+        method: 'POST',
+        data: {
+         id: current_id,
+         state: state
+       }
+      });
+    } 
+    else if(box.hasClass('edit11')){
+      state_info.removeClass('border border-warning').addClass('border border-primary');
+      box.removeClass('edit11').addClass('finish');
+      var state = "finish";
+      $.ajax({  
+        url: '/home/state', 
+        method: 'POST',
+        data: {
+          id: current_id,
+          state: state
+        }
+      });
+    } 
+    else {
+      state_info.removeClass('border border-primary').addClass('border border-light');
+      box.removeClass('finish').addClass('first1');
+      var state = "first1";
+       $.ajax({  
+         url: '/home/state', 
+         method: 'POST',
+         data: {
+          id: current_id,
+          state: state
+         }
+      });
+    }
+  })
+  
+  $(document).on('click','.edit-concept', function(){  // 컨셉 수정버튼
+    var board_id = $(this).data('id');
+    var edit_concept = $(`.concept-${board_id}`);
+
+    var concept = edit_concept.text();
+    console.log(concept);
+    edit_concept.html(`
+    <input type="text" value="${concept}" class="edit-concept-${board_id} text-white" style="background-color:transparent;"> `);
+    $(this).removeClass("edit-concept").addClass("update-concept");
+    $(this).children().removeClass("fa-pencil").addClass("fa-check");   
+  });
+  
+  $(document).on('click','.update-concept', function(){   //컨셉 수정후 업뎃
+    var board_id = $(this).data('id');
+    var concept_form = $(`.edit-concept-${board_id}`);
+    $.ajax({
+      url: '/home/concept/'+board_id,
+      method: 'patch',
+      data: {
+        concept: concept_form.val()
+      }
+    })
+  });
+  
+  $(document).on('change','#upload_img', function(){
+    console.log($('#test')[0]);
+	  $('#test').submit();
+    //$(this).submit();
+    console.log($(this));
+    // var image_path = $(this).val();
+    // $.ajax({
+    //   url: '/home/create_upload',
+    //   method: 'post',
+    //   data:{
+    //     image_path: image_path
+    //   }
+    // })
+   });
+})
+</script>

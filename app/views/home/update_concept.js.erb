@@ -1,0 +1,4 @@
+var edit_concept = $('.concept-<%=@board.id%>');
+edit_concept.html('<%=@board.concept%>');
+$('.update-concept').removeClass("update-concept").addClass("edit-concept");
+$('.fa-check').removeClass("fa-check").addClass("fa-pencil");  
