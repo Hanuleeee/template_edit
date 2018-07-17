@@ -61,7 +61,7 @@
         <div class="gallery-wrp">
           <div class="row mrg10 add-box">
             <% @boards.reverse.each do |board| %>
-              <div class="col-md-4 col-sm-6 col-lg-4 flt-itm <%= board.state %>">
+              <div class="col-md-4 col-sm-6 col-lg-4 flt-itm <%= board.state %>" style="position: relative; !important; left: 0px; top: 0px;" >
                 <% if board.state == "first1" %>
                 <div class="gallery-box border border-light" id="<%= board.id %>">
                 <% elsif board.state == "edit11" %>
@@ -74,9 +74,14 @@
                                 <i class="ion-android-more-vertical"></i>
                             </span>
                             <div class="wdgt-opt-lst brd-rd5">
-                                <%=link_to "Delete", destroy_path(board.id), data: { confirm: "Are you sure?" }, method: "delete", class: "delt-wdgt"%>
+                                <%=link_to "Delete", destroy_path(board.id), data: { confirm: "Are you sure?" }, method: "delete"%>
                                 <a class="convert-state" href="#" title="">Convert</a>
-                                <a class="refrsh-wdgt" href="#" title="">Download</a>
+                                <!--<a class="refrsh-wdgt" href="#" title="">Download</a>-->
+                                <% if board.image_path.to_s().include?("jpg") || board.image_path.to_s().include?("png") %>
+                                <a href="<%=board.image_path.thumb.url %>" download="<%=board.image_path.thumb.url %>" title="<%=board.concept%>">Download</a>
+                                <% else %>
+                                <a class="download-msg" href="#" title="">Download</a>
+                                <% end %>
                             </div>
                         </div>
                         <div class="wdgt-ldr">
@@ -100,8 +105,8 @@
                       <a href="#" title="">tb</a>,
                       <a href="#" title="">Nature</a>
                     </span>
-                    <span class="lightbox">
-                      <a href="images/resource/gallery2-2.jpg" title="">
+                    <span class="lightbox preview">
+                      <a class="click-want" title="" id="<%=board.image_path.thumb.url %>">
                         <i class="fa fa-search"></i>
                       </a>
                     </span>
@@ -249,5 +254,29 @@ $(document).on('ready',function(){
     //   }
     // })
    });
+   
+   $(document).on('click','.download-msg', function(){
+     alert("이모티콘을 만들어주세요!")
+   });
+   
+   $(document).on('click','.preview', function(){
+     var id = $(this).parent().parent().attr('id');
+     console.log(id);
+     $.ajax({
+      url: '/home/preview',
+      method: 'post',
+      data:{
+        id: id,
+      }
+     });
+   });
+   
+  $(document).on('click','.disappear', function(){
+      var target = $(this).parent().parent().parent().parent();
+      console.log(target);
+      target.remove();
+
+    });
+
 })
 </script>

@@ -10,6 +10,12 @@ class HomeController < ApplicationController
   def tool
   end
   
+  def profile
+  end
+  
+  def trial
+  end
+  
   def show
     @boards = Board.order(:created_at).all
   end
@@ -17,6 +23,11 @@ class HomeController < ApplicationController
   def destroy
     @board = Board.find(params[:id])
     @board.destroy
+    redirect_to :back
+  end
+  
+  def preview
+    @board = Board.find(params[:id])
   end
   
   def create_board
