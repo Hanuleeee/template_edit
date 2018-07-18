@@ -1,0 +1,20 @@
+var count = document.getElementsByClassName("finish").length;
+console.log(count);
+var percentage = Math.ceil((100/24)*count);
+console.log(percentage);
+
+
+  $(".progress-bar").each(function(){
+    each_bar_width = percentage;
+    $(this).width(percentage + '%');
+    <!--percent= $(this).children().attr('title')-->
+    var e= $(this).children();
+    console.log(e);
+    e.attr("data-original-title",percentage);
+      });
+      
+  $(function () { 
+  $('[data-toggle="tooltip"]').tooltip({trigger: 'manual'}).tooltip('show');
+   });  
+    <!--var fix= e.html().replace(/85%/g, count);-->
+    <!--e.html(fix);-->

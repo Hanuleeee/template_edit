@@ -18,6 +18,7 @@ class HomeController < ApplicationController
   
   def show
     @boards = Board.order(:created_at).all
+    p @boards
   end
   
   def destroy
